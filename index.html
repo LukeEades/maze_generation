@@ -3,14 +3,32 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, intial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<title>Maze Generator</title>
 		<link rel="stylesheet" href="style.css">
-		<script src="script.js"></script>
+		<script src="scripts/kruskals.js" type="module" defer></script>
+		<script src="scripts/dfs.js" type="module" defer></script>
+		<script src="scripts/prims.js" type="module" defer></script>
 	</head>
 
 	<body>
-		<h1>Hello there</h1>
-
+		<div id="dfs_maze" class="maze">
+			<canvas id="dfs_canvas"></canvas>
+			<button class="play">play</button>
+			<button class="step">step</button>
+			<button class="reset">reset</button>
+		</div>
+		<div id="prims_maze" class="maze">
+			<canvas id="prims_canvas"></canvas>
+			<button class="play">play</button>
+			<button class="step">step</button>
+			<button class="reset">reset</button>
+		</div>
+		<div id="kruskals_maze" class="maze">
+			<canvas id="kruskals_canvas"></canvas>
+			<button class="play">play</button>
+			<button class="step">step</button>
+			<button class="reset">reset</button>
+		</div>
 	</body>
 </html>

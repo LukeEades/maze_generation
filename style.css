@@ -1,0 +1,29 @@
+.maze{
+    display: grid;
+    justify-items:center;
+    align-items: center;
+    grid-template-rows: 8fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    flex-grow: 0;
+}
+
+.maze>canvas{
+    grid-row: 1/2;
+    grid-column: 1 / 4;
+}
+
+.maze>.reset{
+    width: 50%;
+    height: 50%;
+    border-radius: 3rem;
+}
+.maze>.play{
+    width: 50%;
+    height: 50%;
+    border-radius: 3rem;
+}
+.maze>.step{
+    width: 50%;
+    height: 50%;
+    border-radius: 3rem;
+}
