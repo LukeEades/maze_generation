@@ -120,7 +120,8 @@ maze_step.addEventListener('click', ()=>{
 // mazes to implement: (incomplete)
 // randomized dfs - done
 // randomized prims - done
-// randomized kruskals
+// randomized kruskals - done
+// ellers algorithm
 // aldous-broder algorithm
 // recursive division method
 // fractal tessellation
@@ -129,6 +130,5 @@ maze_step.addEventListener('click', ()=>{
 // binary tree algorithm
 // sidewinder algorithm
 // hunt and kill
-// ellers algorithm
 // growing tree algorithm
-// possibly labyrinth? (hamiltonian path)
+// possibly labyrinth

@@ -45,6 +45,9 @@ export function render_maze(context, maze, width, height, visited, canvas_width,
     let cell_width = canvas_width/(2 * width + 1);
     let cell_height = canvas_height/(2 * height + 1);
     let count_y = 0;
+    context.fillStyle = "black";
+    context.strokeStyle = "black";
+    context.fillRect(0, 0, canvas_width, canvas_height);
     context.fillStyle = "white";
     context.strokeStyle = "white";
     for(let i = 0; i < height; i++){
@@ -81,7 +84,6 @@ export function render_maze(context, maze, width, height, visited, canvas_width,
             }else{
                 count_x++;
             }
-
         }
         if(count_y == height * 2 - 1 && finished){
             context.fillRect(count_x * cell_width, count_y * cell_height, cell_width, cell_height);
