@@ -55,7 +55,7 @@ function maze_reset(grid, width, height, stack, visited){
     let index = Math.floor(Math.random() * width * height);
     stack.push(index);
     finished = false;
-    paused = false;
+    paused = true;
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
@@ -102,12 +102,12 @@ reset.addEventListener('click', ()=>{
 });
 
 play.addEventListener('click', ()=>{
-    
     paused = !paused;
-    play.textContent = paused? "play": "pause";
     if(finished){
         maze_reset(grid, width, height, stack, visited);
+        paused = false;
     }
+    play.textContent = paused? "play": "pause";
 });
 
 maze_step.addEventListener('click', ()=>{
@@ -121,7 +121,7 @@ maze_step.addEventListener('click', ()=>{
 // randomized dfs - done
 // randomized prims - done
 // randomized kruskals - done
-// ellers algorithm
+// ellers algorithm - done
 // aldous-broder algorithm
 // recursive division method
 // fractal tessellation

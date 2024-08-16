@@ -88,10 +88,11 @@ function maze_reset(graph, new_graph, grid, visited, edges){
     }
     shuffle(edges);
     finished = false;
-    paused = false;
+    paused = true;
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    play.textContent = "play";
 }
 
 while(temp_width < WIDTH && temp_height < HEIGHT){
@@ -138,6 +139,7 @@ play.addEventListener('click', ()=>{
     paused = !paused;
     if(finished){
         maze_reset(new_graph, temp_graph, grid, visited, edges);
+        paused = false;
     }
     play.textContent = paused? "play": "pause";
 });

@@ -63,6 +63,7 @@ function reset_maze(grid, width, height, visited){
     let start_index = Math.floor(Math.random() * new_graph.size);
     visited[start_index] = "visited";
     finished = false;
+    paused = true;
     num_visited = 0;
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
@@ -124,8 +125,7 @@ play.addEventListener('click', ()=>{
 reset.addEventListener('click', ()=>{
     reset_maze(grid, width, height, visited);
     started = true;
-    paused = false;
-    play.textContent = "pause";
+    play.textContent = "play";
 });
 
 step.addEventListener('click', ()=>{
