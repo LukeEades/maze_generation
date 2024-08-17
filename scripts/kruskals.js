@@ -96,9 +96,9 @@ function maze_reset(graph, new_graph, grid, visited, edges){
 }
 
 while(temp_width < WIDTH && temp_height < HEIGHT){
+    multiplier++;
     temp_width = multiplier * (2 * width + 1);
     temp_height = multiplier * (2 * height + 1);
-    multiplier++;
 }
 WIDTH = temp_width;
 HEIGHT = temp_height;

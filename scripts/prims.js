@@ -85,9 +85,9 @@ let multiplier = 1;
 let temp_width = 0;
 let temp_height = 0;
 while(temp_width < WIDTH && temp_height < HEIGHT){
+    multiplier++;
     temp_width = multiplier * (2 * width + 1);
     temp_height = multiplier * (2 * height + 1);
-    multiplier++;
 }
 WIDTH = temp_width;
 HEIGHT = temp_height;

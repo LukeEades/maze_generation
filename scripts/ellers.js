@@ -1,4 +1,3 @@
-import {graph as make_graph, shuffle, render_maze} from './graph.js'
 let maze_element = document.getElementById("ellers_maze");
 let canvas = document.getElementById("ellers_canvas");
 let ctx = canvas.getContext("2d");
@@ -11,7 +10,7 @@ let HEIGHT = 500;
 
 // need to get this to work for each individual node
 // use some sort of state
-function make_maze_ellers_step(grid, width, height, sets, used, visited){
+function make_maze_ellers_step(width, height, sets, used, visited){
     // somehow have some collection of sets
     let i = Math.floor(counter / width);
     let j = counter % width;
@@ -21,8 +20,6 @@ function make_maze_ellers_step(grid, width, height, sets, used, visited){
             let num = Math.round(Math.random());
             let index = i * width + j; 
             if(num == 1 || sets[index] == sets[index + 1]){
-                grid[index].right = true;
-                grid[index + 1].left = true;
                 ctx.fillRect(pos_x * multiplier, pos_y * multiplier, multiplier, multiplier);
                 pos_x += 2;
                 ctx.fillRect(pos_x * multiplier, pos_y * multiplier, multiplier, multiplier);
@@ -34,8 +31,6 @@ function make_maze_ellers_step(grid, width, height, sets, used, visited){
                 ctx.fillRect(pos_x * multiplier, pos_y * multiplier, multiplier, multiplier);
                 pos_x++;
                 ctx.fillRect(pos_x * multiplier, pos_y * multiplier, multiplier, multiplier);
-                grid[index].right = false;
-                grid[index + 1].left = false;
                 let set_index = sets[index + 1];
                 for(let z = 0; z < width * height; z++){
                     if(sets[z] == set_index){
@@ -62,10 +57,6 @@ function make_maze_ellers_step(grid, width, height, sets, used, visited){
             }
             let last = last_index == index && !used[sets[last_index]]? true: false;
             if(num == 0 || last){
-                // add to set
-                // and flag that this set has been used
-                grid[index].bottom = false;
-                grid[index + width].top = false;
                 ctx.fillRect(pos_x * multiplier, pos_y * multiplier, multiplier, multiplier);
                 ctx.fillRect(pos_x * multiplier, (pos_y + 1) * multiplier, multiplier, multiplier);
                 ctx.fillRect(pos_x * multiplier, (pos_y + 2) * multiplier, multiplier, multiplier);
@@ -76,12 +67,8 @@ function make_maze_ellers_step(grid, width, height, sets, used, visited){
                         sets[z] = sets[index];
                     }
                 }
-                // need to merge sets
             }else{
-                // add a wall
                 ctx.fillRect(pos_x * multiplier, pos_y * multiplier, multiplier, multiplier);
-                grid[index].bottom = true;
-                grid[index + width].top = true;
             }
             pos_x += 2;
             sets[index] = -1;
@@ -95,12 +82,7 @@ function make_maze_ellers_step(grid, width, height, sets, used, visited){
             }
         }else if(state == "bottom"){
             // join all sets together
-            if(sets[counter] == sets[counter + 1]){
-                grid[counter].right = true;
-                grid[counter + 1].left = true;
-            }else{
-                grid[counter].right = false;
-                grid[counter + 1].left = false;
+            if(sets[counter] != sets[counter + 1]){
                 ctx.fillRect((pos_x) * multiplier, pos_y * multiplier, multiplier, multiplier);
                 ctx.fillRect((pos_x + 1) * multiplier, pos_y * multiplier, multiplier, multiplier);
                 ctx.fillRect((pos_x + 2) * multiplier, pos_y * multiplier, multiplier, multiplier);
@@ -125,8 +107,6 @@ function make_maze_ellers_step(grid, width, height, sets, used, visited){
 
 function maze_reset(){
     for(let i = 0; i < width * height; i++){
-        //grid[i] = {top:false, left:false, right:false, bottom:false};
-        grid[i] = {top:true, left:true, right:true, bottom:true};
         visited[i] = "unvisited";
         sets[i] = i;
         used[i] = false;
@@ -168,16 +148,12 @@ maze_element.style.maxHeight = `${HEIGHT + 50}px`;
 let pos_x = 1;
 let pos_y = 1;
 let sets = [];
-let grid = [];
 let state = "row";
 let visited = [];
 let paused = true;
 let finished = false;
 let used = [];
 for(let i = 0; i < width * height; i++){
-    grid[i] = {top:true, left:true, right:true, bottom:true};
-    //if(i < width) grid[i].top = true;
-    //if(i % width == 0) grid[i].left = true;
     visited[i] = "unvisited";
     sets[i] = i;
     used[i] = false;
@@ -190,7 +166,7 @@ finished = false;
 play.textContent = "play";
 function render(){
     if(!paused){
-        make_maze_ellers_step(grid, width, height, sets, used, visited);
+        make_maze_ellers_step(width, height, sets, used, visited);
     }
 }
 
@@ -211,6 +187,6 @@ reset.addEventListener("click", ()=>{
 
 step.addEventListener("click", ()=>{
     if(paused){
-        make_maze_ellers_step(grid, width, height, sets, used, visited);
+        make_maze_ellers_step(width, height, sets, used, visited);
     }
 });
