@@ -130,7 +130,7 @@ let width = 30;
 let height = 30;
 let temp_width = 0;
 let temp_height = 0;
-let multiplier = 1;
+let multiplier = 0;
 while(temp_width < WIDTH && temp_height < HEIGHT){
     multiplier++;
     temp_width = multiplier * (2 * width + 1);

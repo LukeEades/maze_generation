@@ -65,7 +65,7 @@ let height = 30;
 let new_graph = graph(width, height);
 let temp_width = 0;
 let temp_height = 0;
-let multiplier = 1;
+let multiplier = 0;
 while(temp_width < WIDTH && temp_height < HEIGHT){
     multiplier++;
     temp_width = multiplier * (width * 2 + 1);
@@ -122,7 +122,7 @@ maze_step.addEventListener('click', ()=>{
 // randomized prims - done
 // randomized kruskals - done
 // ellers algorithm - done
-// aldous-broder algorithm
+// aldous-broder algorithm - done
 // recursive division method
 // fractal tessellation
 // wilson's algorithm

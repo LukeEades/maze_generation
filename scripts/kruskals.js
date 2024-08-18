@@ -10,7 +10,7 @@ let step = maze_element.querySelector(".step");
 
 let width = 30;
 let height = 30;
-let multiplier = 1;
+let multiplier = 0;
 let temp_width = 0;
 let temp_height = 0;
 
