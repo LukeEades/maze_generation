@@ -5,10 +5,8 @@ let play = maze_element.querySelector(".play");
 let step = maze_element.querySelector(".step");
 let reset = maze_element.querySelector(".reset");
 
-
 let WIDTH = 500;
 let HEIGHT = 500;
-
 
 let width = 30;
 let height = 30;
@@ -58,7 +56,7 @@ function make_maze_recursive_division(stack){
         let horizontal = item.horizontal;
         if(width < 2 || height < 2) return;
         if(horizontal){
-            let new_y = get_pos_range(y, height + 1);
+            let new_y = 1 + get_pos_range(y, height - 1);
 
             stack.push({x:x, y:y, width:width, height:new_y - y, horizontal: choose_horizontal(width, new_y - y)});
             let screen_x = pos_to_coord(x);
@@ -73,7 +71,7 @@ function make_maze_recursive_division(stack){
             ctx.fillStyle = "black";
             stack.push({x:x, y:new_y, width:width, height:height - new_y + y, horizontal:choose_horizontal(width, height - new_y + y)});
         }else if(!horizontal){
-            let new_x = get_pos_range(x, width + 1);
+            let new_x = 1 + get_pos_range(x, width - 1);
 
             stack.push({x:x, y:y, width:new_x - x, height:height, horizontal:choose_horizontal(new_x - x, height)});
             let screen_x = pos_to_coord(new_x);

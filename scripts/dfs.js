@@ -123,12 +123,11 @@ maze_step.addEventListener('click', ()=>{
 // randomized kruskals - done
 // ellers algorithm - done
 // aldous-broder algorithm - done
-// recursive division method
-// fractal tessellation
+// recursive division method - done
 // wilson's algorithm
-// cellular automation algos?
-// binary tree algorithm
-// sidewinder algorithm
 // hunt and kill
+// sidewinder algorithm
 // growing tree algorithm
+// binary tree algorithm
+// cellular automation algos?
 // possibly labyrinth
