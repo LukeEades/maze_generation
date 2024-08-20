@@ -36,7 +36,6 @@ function make_maze_aldous_broder(graph, width, height, visited){
         let y = Math.floor(index / width);
         ctx.fillRect((2 * x + 1) * multiplier, (2 * y + 1) * multiplier, multiplier, multiplier);
         let node_index = node[0].index;
-        console.log(node_index);
         if(visited[node_index] == "unvisited"){
             if(node_index == index + 1){
                 ctx.fillRect((2 * x + 2) * multiplier, (2 * y + 1) * multiplier, multiplier, multiplier);
