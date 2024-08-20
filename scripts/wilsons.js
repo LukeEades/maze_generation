@@ -81,23 +81,31 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
                 }
                 if(rem){
                     walk.delete(value);
-                    let x = multiplier * (2 * value % width + 1);
+                    if(visited[value] == "visited"){
+                        last = value;
+                        continue;
+                    }
+                    let x = multiplier * (2 * (value % width) + 1);
                     let y = multiplier * (2 * Math.floor(value / width) + 1);
-                    //ctx.fillRect(x, y, multiplier, multiplier);
-
+                    ctx.fillRect(x, y, multiplier, multiplier);
+                    if(visited[last] == "visited"){
+                        last = value;
+                        continue;
+                    }
                     if(last == undefined){
                         last = value;
                         continue;
                     }
                     if(last == value - 1){
-                        //ctx.fillRect(x - multiplier, y, multiplier, multiplier);
+                        ctx.fillRect(x - multiplier, y, multiplier, multiplier);
                     }else if(last == value + 1){
-                        //ctx.fillRect(x + multiplier, y, multiplier, multiplier);
+                        ctx.fillRect(x + multiplier, y, multiplier, multiplier);
                     }else if(last == value + width){
-                        //ctx.fillRect(x, y + multiplier, multiplier, multiplier);
+                        ctx.fillRect(x, y + multiplier, multiplier, multiplier);
                     }else if(last == value - width){
-                        //ctx.fillRect(x, y - multiplier, multiplier, multiplier);
+                        ctx.fillRect(x, y - multiplier, multiplier, multiplier);
                     }
+                    last = value;
                 }
                 last = value;
             }
@@ -106,12 +114,12 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
             return;
         }
         walk.add(node);
+        render_set(walk);
         if(visited[node] == "visited"){
             // mark all as visited and draw
             for(const value of walk){
                 visited[value] = "visited";
             }
-            render_set(walk);
             walk.clear();
             let temp = 0;
             while(temp < width * height && visited[indices[temp]] == "visited"){
@@ -130,32 +138,43 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
     }
 }
 
+function maze_reset(){
+    paused = true;
+    finished = false;
+    for(let i = 0; i < width * height; i++){
+        visited[i] = "unvisited";
+        indices[i] = i;
+    }
+    shuffle(indices);
+    start = Math.floor(Math.random() * width * height);
+    target = Math.floor(Math.random() * width * height);
+    while(start == target){
+        target = Math.floor(Math.random() * width * height);
+    }
+    walk.clear();
+    walk.add(start);
+    visited[target] = "visited";
+    ctx.fillStyle = "black";
+    ctx.strokeStyle = "black";
+    ctx.fillRect(0,0, WIDTH, HEIGHT);
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "white";
+    play.textContent = "play";
+    started = false;
+}
 
 let paused = true;
 let finished = false;
+let started = false;
 let visited = [];
 let indices = [];
 let graph = make_graph(width, height);
 let walk = new Set();
 let start = Math.floor(Math.random() * width * height);
 let target = Math.floor(Math.random() * width * height);
-while(start == target){
-    target = Math.floor(Math.random() * width * height);
-}
-for(let i = 0; i < width * height; i++){
-    visited[i] = "unvisited";
-    indices[i] = i;
-}
-visited[target] = "visited";
-walk.add(start);
-shuffle(indices);
 
 let interval = 1;
-ctx.fillStyle = "black";
-ctx.strokeStyle = "black";
-ctx.fillRect(0,0, WIDTH, HEIGHT);
-ctx.fillStyle = "white";
-ctx.strokeStyle = "white";
+maze_reset();
 function render(){
     if(!paused){
         make_maze_wilsons(width, height, visited, walk, indices, graph);
@@ -170,5 +189,17 @@ step.addEventListener("click", ()=>{
 
 play.addEventListener("click", ()=>{
     paused = !paused;
+    if(finished){
+        maze_reset();
+        paused = false;
+    }
+    if(!started){
+        started = true;
+        ctx.fillRect(multiplier * (2 * (target % width) + 1), multiplier * (2 * Math.floor(target / width) + 1), multiplier, multiplier);
+    }
     play.textContent = paused? "play": "pause";
+});
+
+reset.addEventListener("click", ()=>{
+    maze_reset();
 });

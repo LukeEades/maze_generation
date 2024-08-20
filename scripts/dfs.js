@@ -124,7 +124,7 @@ maze_step.addEventListener('click', ()=>{
 // ellers algorithm - done
 // aldous-broder algorithm - done
 // recursive division method - done
-// wilson's algorithm
+// wilson's algorithm - done
 // hunt and kill
 // sidewinder algorithm
 // growing tree algorithm
