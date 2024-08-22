@@ -77,7 +77,6 @@ function render(){
         make_maze_binary_tree(width, height);
     }
 }
-
 setInterval(render, interval);
 
 play.addEventListener("click", ()=>{

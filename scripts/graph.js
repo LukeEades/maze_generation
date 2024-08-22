@@ -40,6 +40,11 @@ export function shuffle(array) {
       [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
     }
 }
+
+export function set_color(ctx, color){
+    ctx.fillStyle = color;
+    ctx.strokeStyle = color;
+}
 // change so that it only renders new objects
 export function render_maze(context, maze, width, height, visited, canvas_width, canvas_height, finished){
     let cell_width = canvas_width/(2 * width + 1);
