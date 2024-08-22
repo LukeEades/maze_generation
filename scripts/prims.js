@@ -2,20 +2,15 @@ import {graph, shuffle, render_maze} from './graph.js'
 
 let WIDTH = 500;
 let HEIGHT = 500;
+let maze_element = document.getElementById('prims_maze');
 let canvas = document.getElementById('prims_canvas');
 let ctx = canvas.getContext("2d");
-let maze_element = document.getElementById('prims_maze');
 let reset = document.querySelector('#prims_maze>.reset');
 let step = document.querySelector('#prims_maze>.step');
 let play = document.querySelector('#prims_maze>.play');
 
-function make_maze_prims(grid, graph, visited){
-    // while newset is not same length as old set
-    let new_set = [];
-    for(let i = 0; i < graph.size; i++){
-        new_set[i] = i;
-    }
-    shuffle(new_set);
+function make_maze_prims(grid, graph, visited, new_set){
+    //shuffle(new_set);
     if(num_visited < graph.size){
         num_visited++;
         let cont = false;
@@ -59,7 +54,9 @@ function reset_maze(grid, width, height, visited){
     for(let i = 0; i < width * height; i++){
         grid[i] = {top:true, left:true, right:true, bottom:true};
         visited[i] = "unvisited";
+        new_set[i] = i;
     }
+    shuffle(new_set);
     let start_index = Math.floor(Math.random() * new_graph.size);
     visited[start_index] = "visited";
     finished = false;
@@ -69,11 +66,13 @@ function reset_maze(grid, width, height, visited){
     ctx.strokeStyle = "black";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
 }
-let width = 30;
-let height = 30;
+let width = 100;
+let height = 100;
 let new_graph = graph(width, height);
 let grid = [];
+let new_set = [];
 for(let i = 0; i < new_graph.size; i++){
+    new_set[i] = i;
     grid[i] = {top:true, left:true, right:true, bottom:true};
 }
 let visited = [];
@@ -102,7 +101,7 @@ let interval = 1;
 play.textContent = paused? "play": "pause";
 function render(){
     if(!paused){
-        make_maze_prims(grid, new_graph, visited, num_visited);
+        make_maze_prims(grid, new_graph, visited, new_set);
     }
     if(!finished && !paused){
         render_maze(ctx, grid, width, height, visited, WIDTH, HEIGHT, finished);
