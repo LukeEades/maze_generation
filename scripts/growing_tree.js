@@ -65,6 +65,8 @@ function make_maze_growing_tree(width, height, visited, nodes, graph){
     }else{
         finished = true;
         play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 function maze_reset(){
@@ -97,7 +99,7 @@ let finished = false;
 maze_reset();
 let interval = 1;
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_growing_tree(width, height, visited, nodes, graph);
     }
 }

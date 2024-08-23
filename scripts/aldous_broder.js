@@ -1,4 +1,4 @@
-import {graph as make_graph, shuffle} from "./graph.js"
+import {graph as make_graph, shuffle, set_color} from "./graph.js"
 let maze_element = document.getElementById("aldous_broder_maze");
 let canvas = maze_element.querySelector("canvas");
 let ctx = canvas.getContext("2d");
@@ -53,16 +53,16 @@ function make_maze_aldous_broder(graph, width, height, visited){
             visited[node_index] = "visited";
             count++;
         }
-        ctx.fillStyle = "blue";
-        ctx.strokeStyle = "blue";
+        set_color(ctx, "blue");
         ctx.fillRect((2 * (node_index % width) + 1) * multiplier, (2 * (Math.floor(node_index/width)) + 1) * multiplier, multiplier, multiplier);
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "white";
+        set_color(ctx, "white");
         index = node_index;
-    }else{
+    }else if(count == width * height - 1){
         ctx.fillRect((2 * (index % width) + 1) * multiplier, (2 * (Math.floor(index/width)) + 1) * multiplier, multiplier, multiplier);
         finished = true;
         paused = true;
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 
@@ -76,11 +76,9 @@ function maze_reset(){
     index = Math.floor(Math.random() * (width * height - 1));
     visited[index] = "visited";
     count = 0;
-    ctx.fillStyle = "black";
-    ctx.strokeStyle = "black";
+    set_color(ctx, "black");
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
+    set_color(ctx, "white");
 }
 
 let visited = [];

@@ -1,4 +1,4 @@
-import {graph as make_graph, shuffle} from "./graph.js"
+import {graph as make_graph, shuffle, set_color} from "./graph.js"
 
 let maze_element = document.getElementById("wilsons_maze");
 let canvas = maze_element.querySelector("canvas");
@@ -30,9 +30,6 @@ canvas.height = HEIGHT;
 maze_element.style.maxWidth = `${WIDTH}px`;
 maze_element.style.maxHeight = `${HEIGHT + 50}px`;
 
-
-
-// need to have a subroutine to render a set
 function render_set(set){
     let last = undefined;
     for(const value of set){
@@ -58,7 +55,7 @@ function render_set(set){
     }
 }
 function make_maze_wilsons(width, height, visited, walk, indices, graph){
-    // start from a random spot and do a randm walk to a random location
+    // start from a random spot and do a random walk to a random location
     // add each index to a set and check if it already has it
     // if it does then delete everything in the set after that index
     // at each index check if it's visited
@@ -71,8 +68,7 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
             // delete all following it
             let rem = false;
             let last = undefined;
-            ctx.fillStyle = "black";
-            ctx.strokeStyle = "black";
+            set_color(ctx, "black");
             for(const value of walk){
                 if(value == node){
                     rem = true;
@@ -109,8 +105,7 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
                 }
                 last = value;
             }
-            ctx.fillStyle = "white";
-            ctx.strokeStyle = "white";
+            set_color(ctx, "white");
             return;
         }
         walk.add(node);
@@ -135,6 +130,8 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
         finished = true;
         play.textContent = "play";
         paused = true;
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 
@@ -154,11 +151,9 @@ function maze_reset(){
     walk.clear();
     walk.add(start);
     visited[target] = "visited";
-    ctx.fillStyle = "black";
-    ctx.strokeStyle = "black";
+    set_color(ctx, "black");
     ctx.fillRect(0,0, WIDTH, HEIGHT);
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
+    set_color(ctx, "white");
     play.textContent = "play";
     started = false;
 }
@@ -176,7 +171,7 @@ let target = Math.floor(Math.random() * width * height);
 let interval = 1;
 maze_reset();
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_wilsons(width, height, visited, walk, indices, graph);
     }
 }

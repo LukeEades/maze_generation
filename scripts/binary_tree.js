@@ -52,6 +52,8 @@ function make_maze_binary_tree(width, height){
         ctx.fillRect(x, y, multiplier, multiplier);
         finished = true;
         play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 
@@ -73,7 +75,7 @@ let paused = true;
 maze_reset();
 let interval = 1;
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_binary_tree(width, height);
     }
 }

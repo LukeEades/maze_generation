@@ -56,7 +56,9 @@ function make_maze_dfs(graph, stack, visited){
     }else{
         finished = true;
         paused = true;
-        play.textContent = "play";     
+        play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 

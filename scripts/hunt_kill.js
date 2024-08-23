@@ -39,8 +39,11 @@ function make_maze_hunt(width, height, indices, visited, graph){
         // pop one off and if is visited skip it
         // else visit it and add random child to stack 
         let index = indices.pop();
-        if(visited[index] == "visited"){
-            return;
+        while(visited[index] == "visited"){
+            if(indices.length == 0){
+                return;
+            }
+            index = indices.pop();
         }
         let x = multiplier * (2 * (index % width) + 1);
         let y = multiplier * (2 * Math.floor(index / width) + 1);
@@ -82,6 +85,8 @@ function make_maze_hunt(width, height, indices, visited, graph){
     }else{
         finished = true;
         play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 
@@ -120,7 +125,7 @@ ctx.fillRect(0, 0, WIDTH, HEIGHT);
 ctx.fillStyle = "white";
 ctx.strokeStyle = "white";
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_hunt(width, height, indices, visited, graph);
     }
 }

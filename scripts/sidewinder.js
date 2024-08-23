@@ -67,8 +67,10 @@ function make_maze_sidewinder(width, height, set){
             set.clear();
         }
     }else{
-       finished = true;
-       play.textContent = "play";
+        finished = true;
+        play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 
@@ -93,7 +95,7 @@ let finished = false;
 let paused = true;
 maze_reset();
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_sidewinder(width, height, set);
     }
 }

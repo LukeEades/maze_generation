@@ -96,13 +96,15 @@ function make_maze_ellers_step(width, height, sets, used, visited){
             }
             pos_x += 2;
         }
+        counter++;
     }else if(counter == width * height - 1){
         finished = true;
         visited[counter] = "visited";
         paused = true;
         play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
-    counter++;
 }
 
 function maze_reset(){
@@ -165,7 +167,7 @@ paused = true;
 finished = false;
 play.textContent = "play";
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_ellers_step(width, height, sets, used, visited);
     }
 }

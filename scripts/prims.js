@@ -1,73 +1,85 @@
-import {graph, shuffle, render_maze} from './graph.js'
+import {graph, shuffle, set_color} from './graph.js'
 
 let WIDTH = 500;
 let HEIGHT = 500;
-let maze_element = document.getElementById('prims_maze');
-let canvas = document.getElementById('prims_canvas');
+let maze_element = document.getElementById("prims_maze");
+let canvas = document.getElementById("prims_canvas");
 let ctx = canvas.getContext("2d");
-let reset = document.querySelector('#prims_maze>.reset');
-let step = document.querySelector('#prims_maze>.step');
-let play = document.querySelector('#prims_maze>.play');
+let reset = maze_element.querySelector(".reset");
+let step = maze_element.querySelector(".step");
+let play = maze_element.querySelector(".play");
 
-function make_maze_prims(grid, graph, visited, new_set){
-    //shuffle(new_set);
-    if(num_visited < graph.size){
-        num_visited++;
-        let cont = false;
-        for(let i = 0; i < graph.size; i++){
-            if(cont) break;
-            let index = new_set[i];
-            if(visited[index] == "visited"){
-                let node = graph.nodes[index];
-                shuffle(node);
-                for(let j = 0; j < node.length; j++){
-                    let neighbor = node[j].index;
-                    if(visited[neighbor] == "unvisited"){
-                        cont = true;
-                        visited[neighbor] = "visited";
-                        if(neighbor == index + 1){
-                            grid[index].right = false;
-                            grid[neighbor].left = false;
-                        }else if(neighbor == index - 1){
-                            grid[index].left = false;
-                            grid[neighbor].right = false;
-                        }else if(neighbor == index + graph.width){
-                            grid[index].bottom = false;
-                            grid[neighbor].top = false;
-                        }else if(neighbor == index - graph.width){
-                            grid[index].top = false;
-                            grid[neighbor].bottom = false;
-                        }
-                        break;
-                    }
+function make_maze_prims(graph, visited, new_set){
+    // if just shuffle once at beginning then it will exhaust all options in one node before moving to the next
+    if(new_set.length > 0){
+        let set_index = Math.floor(Math.random() * new_set.length);
+        let index = new_set[set_index];
+        let nodes = graph.nodes[index];
+        shuffle(nodes);
+        let x = multiplier * (2 * (index % width) + 1);
+        let y = multiplier * (2 * Math.floor(index / width) + 1);
+        ctx.fillRect(x, y, multiplier, multiplier);
+        for(let j = 0; j < nodes.length; j++){
+            let neighbor = nodes[j].index;
+            if(visited[neighbor] == "unvisited"){
+                visited[neighbor] = "visited";
+                new_set.push(neighbor);
+                if(neighbor == index + 1){
+                    ctx.fillRect(x + multiplier, y, multiplier, multiplier);
+                    set_color(ctx, "blue");
+                    ctx.fillRect(x + 2 * multiplier, y, multiplier, multiplier);
+                    set_color(ctx, "white");
+                }else if(neighbor == index - 1){
+                    ctx.fillRect(x - multiplier, y, multiplier, multiplier);
+                    set_color(ctx, "blue");
+                    ctx.fillRect(x - 2 * multiplier, y, multiplier, multiplier);
+                    set_color(ctx, "white");
+                }else if(neighbor == index + graph.width){
+                    ctx.fillRect(x, y + multiplier, multiplier, multiplier);
+                    set_color(ctx, "blue");
+                    ctx.fillRect(x, y + 2 * multiplier, multiplier, multiplier);
+                    set_color(ctx, "white");
+                }else if(neighbor == index - graph.width){
+                    ctx.fillRect(x, y - multiplier, multiplier, multiplier);
+                    set_color(ctx, "blue");
+                    ctx.fillRect(x, y - 2 * multiplier, multiplier, multiplier);
+                    set_color(ctx, "white");
                 }
+                break;
+            }
+            if(j == nodes.length - 1){
+                new_set.splice(set_index, 1);
             }
         }
     }else{
         finished = true;
         paused = true;
         play.textContent = "play";
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
 
-function reset_maze(grid, width, height, visited){
+function reset_maze(){
     for(let i = 0; i < width * height; i++){
         grid[i] = {top:true, left:true, right:true, bottom:true};
         visited[i] = "unvisited";
-        new_set[i] = i;
     }
-    shuffle(new_set);
+    new_set.length = 0;
     let start_index = Math.floor(Math.random() * new_graph.size);
     visited[start_index] = "visited";
+    new_set.push(start_index);
     finished = false;
     paused = true;
-    num_visited = 0;
     ctx.fillStyle = "black";
     ctx.strokeStyle = "black";
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "white";
+    play.textContent = "play";
 }
-let width = 100;
-let height = 100;
+let width = 30;
+let height = 30;
 let new_graph = graph(width, height);
 let grid = [];
 let new_set = [];
@@ -76,10 +88,8 @@ for(let i = 0; i < new_graph.size; i++){
     grid[i] = {top:true, left:true, right:true, bottom:true};
 }
 let visited = [];
-let num_visited = 0;
 let finished = false;
 let paused = true;
-let started = false;
 let temp_width = 0;
 let temp_height = 0;
 let multiplier = 0;
@@ -95,42 +105,30 @@ maze_element.style.maxWidth = `${WIDTH}px`;
 maze_element.style.maxHeight = `${HEIGHT + 50}px`;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
-reset_maze(grid, width, height, visited);
-paused = true;
+reset_maze();
 let interval = 1;
-play.textContent = paused? "play": "pause";
 function render(){
-    if(!paused){
-        make_maze_prims(grid, new_graph, visited, new_set);
-    }
-    if(!finished && !paused){
-        render_maze(ctx, grid, width, height, visited, WIDTH, HEIGHT, finished);
+    if(!paused && !finished){
+        make_maze_prims(new_graph, visited, new_set);
     }
 }
 setInterval(render, interval);
 
 play.addEventListener('click', ()=>{
-    if(finished || !started){
-        started = true;
-        reset_maze(grid, width, height, visited);
+    paused = !paused;
+    if(finished){
+        reset_maze();
         paused = false;
-        play.textContent = "pause";
-    }else{
-        paused = !paused;
-        play.textContent = paused? "play": "pause";
     }
+    play.textContent = paused? "play": "pause";
 });
 
 reset.addEventListener('click', ()=>{
-    reset_maze(grid, width, height, visited);
-    started = true;
-    play.textContent = "play";
+    reset_maze();
 });
 
 step.addEventListener('click', ()=>{
-    started = true;
-    if(!finished && paused){
-        make_maze_prims(grid, new_graph, visited, num_visited);
-        render_maze(ctx, grid, width, height, visited, WIDTH, HEIGHT, finished);
+    if(paused){
+        make_maze_prims(new_graph, visited, new_set);
     }
 });

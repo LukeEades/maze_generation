@@ -1,3 +1,4 @@
+import {set_color} from "./graph.js"
 let maze_element = document.getElementById("recursive_division_maze");
 let canvas = maze_element.querySelector("canvas");
 let ctx = canvas.getContext("2d");
@@ -64,11 +65,9 @@ function make_maze_recursive_division(stack){
             ctx.fillRect(screen_x, screen_y, pos_to_coord(width), multiplier);
 
             let temp_x = pos_to_coord(get_pos_range(x, width)) + multiplier;
-            ctx.fillStyle = "white";
-            ctx.strokeStyle = "white";
+            set_color(ctx, "white");
             ctx.fillRect(temp_x, screen_y, multiplier, multiplier);
-            ctx.fillStyle = "black";
-            ctx.fillStyle = "black";
+            set_color(ctx, "black");
             stack.push({x:x, y:new_y, width:width, height:height - new_y + y, horizontal:choose_horizontal(width, height - new_y + y)});
         }else if(!horizontal){
             let new_x = 1 + get_pos_range(x, width - 1);
@@ -79,28 +78,28 @@ function make_maze_recursive_division(stack){
 
             ctx.fillRect(screen_x, screen_y, multiplier, pos_to_coord(height));
             let temp_y = pos_to_coord(get_pos_range(y, height)) + multiplier;
-            ctx.fillStyle = "white";
-            ctx.strokeStyle = "white";
+            set_color(ctx, "white");
             ctx.fillRect(screen_x, temp_y, multiplier, multiplier);
-            ctx.fillStyle = "black";
-            ctx.strokeStyle = "black";
+            set_color(ctx, "black");
 
             stack.push({x:new_x, y:y, width:x + width - new_x, height:height, horizontal:choose_horizontal(x + width - new_x, height)});
         }
     }else{
         finished = true;
         play.textContent = "play";
+        set_color(ctx, "white");
+        ctx.fillRect(0, multiplier, multiplier, multiplier);
+        ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
+        set_color(ctx, "black");
     }
 }
 
 function maze_reset(){
     stack.length = 0;
     stack.push({x:0, y:0, width:width, height:height, horizontal:choose_horizontal(width, height)});
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
+    set_color(ctx, "white");
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    ctx.fillStyle = "black";
-    ctx.strokeStyle = "black";
+    set_color(ctx, "black");
     paused = true;
     finished = false;
     play.textContent = "play";
@@ -111,7 +110,6 @@ function maze_reset(){
 }
 
 let stack = [];
-stack.push({x:0, y:0, width:width, height:height, horizontal:choose_horizontal(width, height)});
 
 let paused = true;
 let finished = false
@@ -119,7 +117,7 @@ let finished = false
 let interval = 1;
 maze_reset();
 function render(){
-    if(!paused){
+    if(!paused && !finished){
         make_maze_recursive_division(stack);
     }
 }
