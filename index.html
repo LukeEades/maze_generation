@@ -20,29 +20,53 @@
 	</head>
 
 	<body>
-		<div id="dfs_maze" class="maze">
-			<canvas id="dfs_canvas"></canvas>
-			<button class="play">play</button>
-			<button class="step">step</button>
-			<button class="reset">reset</button>
+		<div>
+			<div id="dfs_maze" class="maze">
+				<canvas id="dfs_canvas"></canvas>
+				<button class="play">play</button>
+				<button class="step">step</button>
+				<button class="reset">reset</button>
+				<div class="width_label">
+					<div>30</div>
+					<input class="width" type="range" max="100" min="2" value="30" step="1">
+				</div>
+				<div class="height_label">
+					<div>30</div>
+					<input class="height" type="range" max="100" min="2" value="30" step="1">
+				</div>
+			</div>
 		</div>
-		<div id="prims_maze" class="maze">
-			<canvas id="prims_canvas"></canvas>
-			<button class="play">play</button>
-			<button class="step">step</button>
-			<button class="reset">reset</button>
+		<div>
+			<div id="prims_maze" class="maze">
+				<canvas id="prims_canvas"></canvas>
+				<button class="play">play</button>
+				<button class="step">step</button>
+				<button class="reset">reset</button>
+				<div class="width_label">
+					<div>30</div>
+					<input class="width" type="range" max="100" min="2" value="30" step="1">
+				</div>
+				<div class="height_label">
+					<div>30</div>
+					<input class="height" type="range" max="100" min="2" value="30" step="1">
+				</div>
+			</div>
 		</div>
-		<div id="kruskals_maze" class="maze">
-			<canvas id="kruskals_canvas"></canvas>
-			<button class="play">play</button>
-			<button class="step">step</button>
-			<button class="reset">reset</button>
+		<div>
+			<div id="kruskals_maze" class="maze">
+				<canvas id="kruskals_canvas"></canvas>
+				<button class="play">play</button>
+				<button class="step">step</button>
+				<button class="reset">reset</button>
+			</div>
 		</div>
-		<div id="ellers_maze" class="maze">
-			<canvas id="ellers_canvas"></canvas>
-			<button class="play">play</button>
-			<button class="step">step</button>
-			<button class="reset">reset</button>
+		<div>
+			<div id="ellers_maze" class="maze">
+				<canvas id="ellers_canvas"></canvas>
+				<button class="play">play</button>
+				<button class="step">step</button>
+				<button class="reset">reset</button>
+			</div>
 		</div>
 		<div id="aldous_broder_maze" class="maze">
 			<canvas id="aldous_broder_canvas"></canvas>

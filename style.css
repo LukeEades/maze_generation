@@ -1,10 +1,28 @@
+*{
+    padding:0;
+    margin:0;
+}
+
+body{
+    display: grid;
+    justify-content: center;
+}
+
+body>div{
+    display: flex;
+    justify-content: center;
+}
+
 .maze{
     display: grid;
-    justify-items:center;
+    justify-content:center;
+    justify-items: center;
+    align-content: center;
     align-items: center;
-    grid-template-rows: 8fr 1fr;
+    grid-template-rows: 8fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr;
     flex-grow: 0;
+    border: 2px black solid;
 }
 
 .maze>canvas{
@@ -13,17 +31,39 @@
 }
 
 .maze>.reset{
-    width: 50%;
-    height: 50%;
-    border-radius: 3rem;
+    width: 75%;
+    height: 1fr;
+    grid-column: 3/4;
+    border-radius: .5rem;
 }
+
 .maze>.play{
-    width: 50%;
-    height: 50%;
-    border-radius: 3rem;
+    width: 75%;
+    height: 1fr;
+    grid-column: 1/2;
+    border-radius: .5rem;
 }
+
 .maze>.step{
-    width: 50%;
-    height: 50%;
-    border-radius: 3rem;
+    width: 75%;
+    height: 1fr;
+    grid-column: 2/3;
+    border-radius: .5rem;
+}
+
+.maze>.width_label{
+    display: flex;
+    grid-column: 1/2;
+}
+
+.maze>.height_label{
+    display: flex;
+    grid-column: 3/4;
+}
+
+.width{
+}
+
+.height{
+
 }

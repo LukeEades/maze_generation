@@ -1,4 +1,6 @@
-import {graph, shuffle, set_color} from './graph.js'
+import {graph as make_graph, shuffle, set_color} from "./graph.js"
+let max_width = 500;
+let max_height = 500;
 let WIDTH = 500;
 let HEIGHT = 500;
 let canvas = document.getElementById("dfs_canvas");
@@ -7,6 +9,15 @@ let maze_element  = document.getElementById("dfs_maze");
 let reset = document.querySelector("#dfs_maze>.reset");
 let play = document.querySelector("#dfs_maze>.play");
 let step = document.querySelector("#dfs_maze>.step");
+let width_range = maze_element.querySelector(".width");
+let height_range = maze_element.querySelector(".height");
+width_range.addEventListener("input", (event)=>{
+    width_range.previousElementSibling.textContent = event.target.value;
+});
+
+height_range.addEventListener("input", (event)=>{
+    height_range.previousElementSibling.textContent = event.target.value;
+});
 
 function make_maze_dfs(graph, stack, visited){
     if(stack.length > 0){
@@ -62,7 +73,29 @@ function make_maze_dfs(graph, stack, visited){
     }
 }
 
+function set_dimensions(){
+    width = Number(width_range.value);
+    height = Number(height_range.value);
+    new_graph = make_graph(width, height);
+    let temp_width = 0;
+    let temp_height = 0;
+    multiplier = 0;
+    while(temp_width < max_width && temp_height < max_height){
+        multiplier++;
+        temp_width = multiplier * (width * 2 + 1);
+        temp_height = multiplier * (height * 2 + 1);
+    }
+
+    maze_element.style.maxWidth = `${temp_width}px`;
+    maze_element.style.maxHeight = `${temp_height + 75}px`;
+    canvas.width = temp_width;
+    canvas.height = temp_height;
+    WIDTH = temp_width;
+    HEIGHT = temp_height;
+}
+
 function maze_reset(){
+    set_dimensions();
     for(let i = 0; i < width * height; i++){
         visited[i] = "unvisited";
     }
@@ -80,30 +113,17 @@ function maze_reset(){
     ctx.strokeStyle = "white";
 }
 
-let width = 30;
-let height = 30;
-let new_graph = graph(width, height);
-let temp_width = 0;
-let temp_height = 0;
+let width = Number(width_range.value);
+let height = Number(height_range.value);
+let new_graph = make_graph(width, height);
 let multiplier = 0;
-while(temp_width < WIDTH && temp_height < HEIGHT){
-    multiplier++;
-    temp_width = multiplier * (width * 2 + 1);
-    temp_height = multiplier * (height * 2 + 1);
-}
-WIDTH = temp_width;
-HEIGHT = temp_height;
-maze_element.style.maxWidth = `${WIDTH}px`;
-maze_element.style.maxHeight = `${HEIGHT + 50}px`;
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
 
 let stack = [];
 let visited = [];
 let finished = false;
 let paused = true;
 maze_reset();
-paused = true;
+finished = true;
 let interval = 1;
 function render(){
     if(!paused){

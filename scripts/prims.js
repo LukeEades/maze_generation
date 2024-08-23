@@ -1,5 +1,7 @@
-import {graph, shuffle, set_color} from './graph.js'
+import {graph as make_graph, shuffle, set_color} from './graph.js'
 
+let max_width = 500;
+let max_height = 500;
 let WIDTH = 500;
 let HEIGHT = 500;
 let maze_element = document.getElementById("prims_maze");
@@ -8,6 +10,16 @@ let ctx = canvas.getContext("2d");
 let reset = maze_element.querySelector(".reset");
 let step = maze_element.querySelector(".step");
 let play = maze_element.querySelector(".play");
+
+let width_range = maze_element.querySelector(".width");
+let height_range = maze_element.querySelector(".height");
+width_range.addEventListener("input", (event)=>{
+    width_range.previousElementSibling.textContent = event.target.value;
+});
+
+height_range.addEventListener("input", (event)=>{
+    height_range.previousElementSibling.textContent = event.target.value;
+});
 
 function make_maze_prims(graph, visited, new_set){
     // if just shuffle once at beginning then it will exhaust all options in one node before moving to the next
@@ -61,6 +73,7 @@ function make_maze_prims(graph, visited, new_set){
 }
 
 function reset_maze(){
+    set_dimensions();
     for(let i = 0; i < width * height; i++){
         grid[i] = {top:true, left:true, right:true, bottom:true};
         visited[i] = "unvisited";
@@ -71,16 +84,34 @@ function reset_maze(){
     new_set.push(start_index);
     finished = false;
     paused = true;
-    ctx.fillStyle = "black";
-    ctx.strokeStyle = "black";
+    set_color(ctx, "black");
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
-    ctx.fillStyle = "white";
-    ctx.strokeStyle = "white";
+    set_color(ctx, "white");
     play.textContent = "play";
+}
+
+function set_dimensions(){
+    width = Number(width_range.value);
+    height = Number(height_range.value);
+    new_graph = make_graph(width, height); 
+    let temp_width = 0;
+    let temp_height = 0;
+    multiplier = 0;
+    while(temp_width < max_width && temp_height < max_height){
+        multiplier++;
+        temp_width = multiplier * (2 * width + 1);
+        temp_height = multiplier * (2 * height + 1);
+    }
+    WIDTH = temp_width;
+    HEIGHT = temp_height;
+    maze_element.style.maxWidth = `${WIDTH}px`;
+    maze_element.style.maxHeight = `${HEIGHT + 75}px`;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
 }
 let width = 30;
 let height = 30;
-let new_graph = graph(width, height);
+let new_graph = make_graph(width, height);
 let grid = [];
 let new_set = [];
 for(let i = 0; i < new_graph.size; i++){
@@ -88,24 +119,12 @@ for(let i = 0; i < new_graph.size; i++){
     grid[i] = {top:true, left:true, right:true, bottom:true};
 }
 let visited = [];
-let finished = false;
+let finished = true;
 let paused = true;
-let temp_width = 0;
-let temp_height = 0;
 let multiplier = 0;
-while(temp_width < WIDTH && temp_height < HEIGHT){
-    multiplier++;
-    temp_width = multiplier * (2 * width + 1);
-    temp_height = multiplier * (2 * height + 1);
-}
-WIDTH = temp_width;
-HEIGHT = temp_height;
 
-maze_element.style.maxWidth = `${WIDTH}px`;
-maze_element.style.maxHeight = `${HEIGHT + 50}px`;
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
 reset_maze();
+finished = true;
 let interval = 1;
 function render(){
     if(!paused && !finished){
