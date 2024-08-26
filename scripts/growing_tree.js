@@ -6,27 +6,21 @@ let play = maze_element.querySelector(".play");
 let step = maze_element.querySelector(".step");
 let reset = maze_element.querySelector(".reset");
 
+let max_width = 500;
+let max_height = 500;
 let WIDTH = 500;
 let HEIGHT = 500;
 
 let width = 30;
 let height = 30;
 
-let temp_width = 0;
-let temp_height = 0;
 let multiplier = 0;
-while(temp_width < WIDTH && temp_height < HEIGHT){
-    multiplier++;
-    temp_width = multiplier * (2 * width + 1);
-    temp_height = multiplier * (2 * height + 1);
-}
-WIDTH = temp_width;
-HEIGHT = temp_height;
 
-maze_element.style.maxWidth = `${WIDTH}px`;
-maze_element.style.maxHeight = `${HEIGHT + 50}px`;
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
+let dimensions_range = maze_element.querySelector(".dimensions");
+let dimensions = maze_element.querySelector(".dimensions_label>div");
+dimensions_range.addEventListener("input", (event)=>{
+    dimensions.textContent = event.target.value;
+});
 
 function make_maze_growing_tree(width, height, visited, nodes, graph){
     // can configure to be different
@@ -69,7 +63,31 @@ function make_maze_growing_tree(width, height, visited, nodes, graph){
         ctx.fillRect(WIDTH - multiplier, HEIGHT - 2 * multiplier, multiplier, multiplier);
     }
 }
+
+function set_dimensions(){
+    width = Number(dimensions.textContent);
+    height = width;
+    graph = make_graph(width, height);
+    let temp_width = 0;
+    let temp_height = 0;
+    multiplier = 0;
+    while(temp_width < max_width && temp_height < max_height){
+        multiplier++;
+        temp_width = multiplier * (2 * width + 1);
+        temp_height = multiplier * (2 * height + 1);
+    }
+    WIDTH = temp_width;
+    HEIGHT = temp_height;
+
+    maze_element.style.maxWidth = `${WIDTH}px`;
+    maze_element.style.maxHeight = `${HEIGHT + 75}px`;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+}
+
 function maze_reset(){
+    set_dimensions();
+    visited.length = 0;
     for(let i = 0; i < width * height; i++){
         visited[i] = "unvisited";
     }
@@ -88,15 +106,13 @@ function maze_reset(){
     ctx.strokeStyle = "white";
 }
 let visited = [];
-for(let i = 0; i < width * height; i++){
-    visited[i] = "unvisited";
-}
 let nodes = [];
 let graph = make_graph(width, height);
 
 let paused = true;
 let finished = false;
 maze_reset();
+finished = true;
 let interval = 1;
 function render(){
     if(!paused && !finished){

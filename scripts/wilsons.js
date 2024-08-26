@@ -7,28 +7,20 @@ let play = maze_element.querySelector(".play");
 let step = maze_element.querySelector(".step");
 let reset = maze_element.querySelector(".reset");
 
+let max_width = 500;
+let max_height = 500;
 let WIDTH = 500;
 let HEIGHT = 500;
-
 let width = 30;
 let height = 30;
-
-let temp_width = 0;
-let temp_height = 0;
 let multiplier = 0;
-while(temp_width < WIDTH && temp_height < HEIGHT){
-    multiplier++;
-    temp_width = multiplier * (2 * width + 1);
-    temp_height = multiplier * (2 * height + 1);
-}
 
-WIDTH = temp_width;
-HEIGHT = temp_height;
 
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-maze_element.style.maxWidth = `${WIDTH}px`;
-maze_element.style.maxHeight = `${HEIGHT + 50}px`;
+let dimensions_range = maze_element.querySelector(".dimensions");
+let dimensions = maze_element.querySelector(".dimensions_label>div");
+dimensions_range.addEventListener("input", (event)=>{
+    dimensions.textContent = event.target.value;
+});
 
 function render_set(set){
     let last = undefined;
@@ -135,9 +127,33 @@ function make_maze_wilsons(width, height, visited, walk, indices, graph){
     }
 }
 
+function set_dimensions(){
+    width = Number(dimensions.textContent);
+    height = width;
+    graph = make_graph(width, height);
+    let temp_width = 0;
+    let temp_height = 0;
+    multiplier = 0;
+    while(temp_width < max_width && temp_height < max_height){
+        multiplier++;
+        temp_width = multiplier * (2 * width + 1);
+        temp_height = multiplier * (2 * height + 1);
+    }
+
+    WIDTH = temp_width;
+    HEIGHT = temp_height;
+
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    maze_element.style.maxWidth = `${WIDTH}px`;
+    maze_element.style.maxHeight = `${HEIGHT + 75}px`;
+}
+
 function maze_reset(){
+    set_dimensions();
     paused = true;
     finished = false;
+    indices.length = 0;
     for(let i = 0; i < width * height; i++){
         visited[i] = "unvisited";
         indices[i] = i;
@@ -170,6 +186,7 @@ let target = Math.floor(Math.random() * width * height);
 
 let interval = 1;
 maze_reset();
+finished = true;
 function render(){
     if(!paused && !finished){
         make_maze_wilsons(width, height, visited, walk, indices, graph);

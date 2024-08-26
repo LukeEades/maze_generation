@@ -11,14 +11,10 @@ let reset = maze_element.querySelector(".reset");
 let step = maze_element.querySelector(".step");
 let play = maze_element.querySelector(".play");
 
-let width_range = maze_element.querySelector(".width");
-let height_range = maze_element.querySelector(".height");
-width_range.addEventListener("input", (event)=>{
-    width_range.previousElementSibling.textContent = event.target.value;
-});
-
-height_range.addEventListener("input", (event)=>{
-    height_range.previousElementSibling.textContent = event.target.value;
+let dimensions_range = maze_element.querySelector(".dimensions");
+let dimensions = maze_element.querySelector(".dimensions_label>div");
+dimensions_range.addEventListener("input", (event)=>{
+    dimensions.textContent = event.target.value;
 });
 
 function make_maze_prims(graph, visited, new_set){
@@ -91,8 +87,8 @@ function reset_maze(){
 }
 
 function set_dimensions(){
-    width = Number(width_range.value);
-    height = Number(height_range.value);
+    width = Number(dimensions.textContent);
+    height = width;
     new_graph = make_graph(width, height); 
     let temp_width = 0;
     let temp_height = 0;

@@ -6,6 +6,8 @@ let play = maze_element.querySelector(".play");
 let step = maze_element.querySelector(".step");
 let reset = maze_element.querySelector(".reset");
 
+let max_width = 500;
+let max_height = 500;
 let WIDTH = 500;
 let HEIGHT = 500;
 
@@ -26,6 +28,12 @@ maze_element.style.maxWidth = `${WIDTH}px`;
 maze_element.style.maxHeight = `${HEIGHT + 50}px`;
 canvas.width = WIDTH;
 canvas.height = HEIGHT;
+
+let dimensions_range = maze_element.querySelector(".dimensions");
+let dimensions = maze_element.querySelector(".dimensions_label>div");
+dimensions_range.addEventListener("input", (event)=>{
+    dimensions.textContent = event.target.value;
+});
 
 function choose_horizontal(width, height){
     if(width > height){
@@ -94,7 +102,27 @@ function make_maze_recursive_division(stack){
     }
 }
 
+function set_dimensions(){
+    width = Number(dimensions.textContent);
+    height = width;
+    let temp_width = 0;
+    let temp_height = 0;
+    multiplier = 0;
+    while(temp_width < max_width && temp_height < max_height){
+        multiplier++;
+        temp_width = multiplier * (2 * width + 1);
+        temp_height = multiplier * (2 * height + 1);
+    }
+    WIDTH = temp_width;
+    HEIGHT = temp_height;
+    maze_element.style.maxWidth = `${WIDTH}px`;
+    maze_element.style.maxHeight = `${HEIGHT + 75}px`;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+}
+
 function maze_reset(){
+    set_dimensions();
     stack.length = 0;
     stack.push({x:0, y:0, width:width, height:height, horizontal:choose_horizontal(width, height)});
     set_color(ctx, "white");
@@ -112,10 +140,11 @@ function maze_reset(){
 let stack = [];
 
 let paused = true;
-let finished = false
+let finished = false;
 
 let interval = 1;
 maze_reset();
+finished = true;
 function render(){
     if(!paused && !finished){
         make_maze_recursive_division(stack);

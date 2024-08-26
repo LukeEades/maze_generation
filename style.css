@@ -61,9 +61,7 @@ body>div{
     grid-column: 3/4;
 }
 
-.width{
-}
-
-.height{
-
+.dimensions_label{
+    display: flex;
+    grid-column: 2/3;
 }

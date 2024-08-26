@@ -1,30 +1,23 @@
 import {graph as make_graph, shuffle, set_color} from './graph.js'
-let WIDTH = 500;
-let HEIGHT = 500;
+let max_width = 500;
+let max_height = 500;
+let WIDTH = 0;
+let HEIGHT = 0;
 let canvas = document.getElementById("kruskals_canvas");
 let ctx = canvas.getContext("2d");
 let maze_element = document.getElementById("kruskals_maze");
 let reset = maze_element.querySelector(".reset");
 let play = maze_element.querySelector(".play");
 let step = maze_element.querySelector(".step");
+let dimensions_range = maze_element.querySelector(".dimensions");
+let dimensions = maze_element.querySelector(".dimensions_label>div");
+dimensions_range.addEventListener("input", (event)=>{
+    dimensions.textContent = event.target.value;
+});
 
-let width = 30;
-let height = 30;
+let width = Number(dimensions.textContent);
+let height = width;
 let multiplier = 0;
-let temp_width = 0;
-let temp_height = 0;
-while(temp_width < WIDTH && temp_height < HEIGHT){
-    multiplier++;
-    temp_width = multiplier * (2 * width + 1);
-    temp_height = multiplier * (2 * height + 1);
-}
-WIDTH = temp_width;
-HEIGHT = temp_height;
-
-canvas.width = WIDTH;
-canvas.height = HEIGHT;
-maze_element.style.maxWidth = `${WIDTH}px`;
-maze_element.style.maxHeight = `${HEIGHT + 50}px`;
 
 function has_cycle(graph, index, parent = -1, visited = null){
     if(visited == null){
@@ -95,7 +88,29 @@ function maze_make_kruskals(new_graph, visited, edges){
     }
 }
 
+function set_dimensions(){
+    width = Number(dimensions.textContent);
+    height = width;
+    graph = make_graph(width, height);
+    temp_graph = make_graph(width, height);
+    multiplier = 0;
+    let temp_width = 0;
+    let temp_height = 0;
+    while(temp_width < max_width && temp_height < max_height){
+        multiplier++;
+        temp_width = multiplier * (2 * width + 1);
+        temp_height = multiplier * (2 * height + 1);
+    }
+    WIDTH = temp_width;
+    HEIGHT = temp_height;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+    maze_element.style.maxWidth = `${WIDTH}px`;
+    maze_element.style.maxHeight = `${HEIGHT + 75}px`;
+}
+
 function maze_reset(){
+    set_dimensions();
     edges.length = 0;
     for(let i = 0; i < graph.size; i++){
         visited[i] = "unvisited";
@@ -117,11 +132,12 @@ function maze_reset(){
 
 let visited = [];
 let edges = [];
-let finished = false;
+let finished = true;
 let paused = true;
 let graph = make_graph(width, height);
 let temp_graph = make_graph(width, height);
 maze_reset();
+finished = true;
 
 let interval = 1;
 function render(){

@@ -9,14 +9,11 @@ let maze_element  = document.getElementById("dfs_maze");
 let reset = document.querySelector("#dfs_maze>.reset");
 let play = document.querySelector("#dfs_maze>.play");
 let step = document.querySelector("#dfs_maze>.step");
-let width_range = maze_element.querySelector(".width");
-let height_range = maze_element.querySelector(".height");
-width_range.addEventListener("input", (event)=>{
-    width_range.previousElementSibling.textContent = event.target.value;
-});
 
-height_range.addEventListener("input", (event)=>{
-    height_range.previousElementSibling.textContent = event.target.value;
+let dimensions_range = maze_element.querySelector(".dimensions");
+let dimensions = maze_element.querySelector(".dimensions_label>div");
+dimensions_range.addEventListener("input", (event)=>{
+    dimensions.textContent = event.target.value;
 });
 
 function make_maze_dfs(graph, stack, visited){
@@ -74,8 +71,8 @@ function make_maze_dfs(graph, stack, visited){
 }
 
 function set_dimensions(){
-    width = Number(width_range.value);
-    height = Number(height_range.value);
+    width = Number(dimensions.textContent);
+    height = width;
     new_graph = make_graph(width, height);
     let temp_width = 0;
     let temp_height = 0;
@@ -113,8 +110,8 @@ function maze_reset(){
     ctx.strokeStyle = "white";
 }
 
-let width = Number(width_range.value);
-let height = Number(height_range.value);
+let width = Number(dimensions.textContent);
+let height = width;
 let new_graph = make_graph(width, height);
 let multiplier = 0;
 
