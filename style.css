@@ -11,6 +11,7 @@ body{
 body>div{
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 
 .maze{
@@ -64,4 +65,9 @@ body>div{
 .dimensions_label{
     display: flex;
     grid-column: 2/3;
+}
+
+.maze_cell{
+    display: flex;
+    align-items: center;
 }
