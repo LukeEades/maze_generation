@@ -20,6 +20,10 @@
 	</head>
 
 	<body>
+		<div id="title">
+			<h1>Maze Generation</h1>
+			<p>Maze generation is a fascinating concept. When I first stumbled upon it I had no clue how to get started. I did some research and landed upon a few excellent articles. I'll link them for any interested people to check out. I'll get a few things out of the way before getting into the actual algorithms. First of all, all of the algorithms I included are used to generate perfect mazes. By that I mean mazes that have exactly one path between any two cells and no loops. What's cool about the concept of generating mazes is that it is very relevant to graph theory. A lot of the algorithms are just minimum spanning tree or graph traversal algorithms with a little bit of randomness mixed in. Now that I've mentioned it I'll clear up a few basic graph terms. A spanning tree is just a tree that contains every node in a graph. Every perfect maze is just one of the possible spanning trees that can be formed in a grid. There are two types of maze creators: passage carvers and walls creators, which are fairly evident of what they mean. Well, I think that clears a good amount of the vocabulary for this so let's move onto the actual algorithms.</p>
+		</div>
 		<div class="maze_cell">
 			<h2>Recursive Backtracker</h2>
 			<p>How this one works is that it essentially just does a depth first traversal of graph. It starts by putting a random node onto a stack. And then on each cycle it pops a node off of the stack and randomly adds one of its neighbors that hasn't yet been visited. If all the neighbors have been visited then the node isn't aded back to the stack. So basically it will form a long path until it dead-ends itself. Once it dead-ends then it will essentially pop nodes off of the stack until one with unvisited children is found. This continues until all nodes have been visited and the stack is empty.</p>
@@ -119,6 +123,8 @@
 			</div>
 		</div>
 		<div class="maze_cell">
+			<h2>Hunt and Kill</h2>
+			<p>This one is very similar to the backtracker. It does the same basic logic for carving paths but when it encounters a dead-end it simply starts again from the first unvisited cell in the maze, starting from the top left counting left to right in each column. This results once again in long winding passages but they are mostly directed towards the bottom rather than branching from one path. There really isn't much more to be said about this algorithm.</p>
 			<div id="hunt_and_kill_maze" class="maze">
 				<canvas id="hunt_and_kill_canvas"></canvas>
 				<button class="play">play</button>
@@ -131,6 +137,8 @@
 			</div>
 		</div>
 		<div class="maze_cell">
+			<h2>Sidewinder</h2>
+			<p>This one is similar to Eller's in the way that it operates row by row. It actually is able to use less storage then Eller's, however. It only needs to keep track of one set. How it works is it iterates through each cell and chooses whether or not to add it to the set. If it decides not to then it adds 1 random path up from the current set, clears the set, and adds the current cell to the set. If it chooses to add the cell to the set then it just, well, adds the cell and draws the passage. Due to the nature of carving paths upword it we first need to draw the entire first row so that all the later rows will be guaranteed to be connected. And that's it, it forms a perfect maze by doing this.</p>
 			<div id="sidewinder_maze" class="maze">
 				<canvas id="sidewinder_canvas"></canvas>
 				<button class="play">play</button>
@@ -143,6 +151,8 @@
 			</div>
 		</div>
 		<div class="maze_cell">
+			<h2>Growing Tree</h2>
+			<p>This algorithm is cool in that it is more general than the others. It can be configured to behave in different manners. It's basic functionality is this: you have a set that starts out empty and then you add a random cell to start from. At each iteration you take a cell from that set and carve a passage to one of the cells unvisited neighbors, adding that neighbor to the set as well. If the selected cell didn't have any unvisited neighbors then the cell is removed from the set. It may sound pretty basic but the behavior of the algorithm is changed drastically depending on how the cells are selected from the set. It behaves the same as Prim's when the cells are selected at random and the same as the backtracker when the cell selected is the one most recently added to the set. These behaviors can be mixed for interesting results.</p>
 			<div id="growing_tree_maze" class="maze">
 				<canvas id="growing_tree_canvas"></canvas>
 				<button class="play">play</button>
@@ -155,6 +165,8 @@
 			</div>
 		</div>
 		<div class="maze_cell">
+			<h2>Binary Tree</h2>
+			<p>Last and sort of least we have the binary tree algorithm. It works how you may assume it to work and is kind of cool in that it actually works on just a cell by cell basis. It carves a passage one of two directions depending on which corner you start from. If you are starting from the top left then you either carve a passage down or right. If the cell is along the left or bottom wall then it only has one option to carve so it creates large passages along those sides. And this ends up creating a perfect maze which is kind of cool, no additional memory necessary.</p>
 			<div id="binary_tree_maze" class="maze">
 				<canvas id="binary_tree_canvas"></canvas>
 				<button class="play">play</button>
@@ -165,6 +177,15 @@
 					<input class="dimensions" type="range" max="100" min="2" value="30" step="1">
 				</div>
 			</div>
+		</div>
+		<div id="sources">
+			<h2>Sources</h2>
+			<ul>
+				<li><a href="https://professor-l.github.io/mazes/">https://professor-l.github.io/mazes/</a></li>
+				<li><a href="https://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap">https://weblog.jamisbuck.org/2011/2/7/maze-generation-algorithm-recap</a></li>
+				<li><a href="https://en.wikipedia.org/wiki/Maze_generation_algorithm">https://en.wikipedia.org/wiki/Maze_generation_algorithm</a></li>
+				<li><a href="https://www.astrolog.org/labyrnth/algrithm.htm">https://www.astrolog.org/labyrnth/algrithm.htm</a></li>
+			</ul>
 		</div>
 	</body>
 </html>
